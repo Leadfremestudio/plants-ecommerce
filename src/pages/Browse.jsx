@@ -1,21 +1,13 @@
 import { useState, useMemo } from 'react';
 import { LuFilter, LuChevronDown } from 'react-icons/lu';
 import ProductCard from '../components/ProductCard';
+import { products } from '../data/products';
 
 export default function Browse() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
 
-  const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Succulents', 'Trees', 'Bulk Trays'];
-
-  const products = [
-    { id: 1, name: 'Desert Rose', category: 'Flowering', priceValue: 4500, price: '₹4,500', image: '/featured/desert_rose.webp' },
-    { id: 2, name: 'Exotic Monstera', category: 'Indoor', priceValue: 2600, price: '₹2,600', image: '/featured/indoor_cat.webp' },
-    { id: 3, name: 'Asian Juniper Bonsai', category: 'Rare', priceValue: 3900, price: '₹3,900', image: '/featured/hero_bonsai.webp' },
-    { id: 4, name: 'Premium Adenium', category: 'Flowering', priceValue: 6900, price: '₹6,900', image: '/featured/adenium_cat.webp' },
-    { id: 5, name: 'Rare Philodendron', category: 'Indoor', priceValue: 5200, price: '₹5,200', image: '/featured/exotic_indoor_plant.webp' },
-    { id: 6, name: 'Masterpiece Bonsai', category: 'Rare', priceValue: 9800, price: '₹9,800', image: '/featured/bonsai_cat.webp' },
-  ];
+  const categories = ['All', 'Indoor', 'Outdoor', 'Flowering', 'Succulents', 'Trees', 'Rare'];
 
   const processedProducts = useMemo(() => {
     let filtered = activeCategory === 'All' 

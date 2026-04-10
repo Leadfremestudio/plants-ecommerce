@@ -19,8 +19,11 @@ export default function ProductCard({ product, className = "" }) {
       onClick={handleProductClick}
     >
       <div className="h-64 overflow-hidden relative">
-        <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={product.name} src={product.image} />
-
+        <img 
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+          alt={product.name} 
+          src={product.images ? product.images[0] : product.image} 
+        />
       </div>
       <div className="p-6">
         <h4 className="text-lg font-bold text-primary mb-1 font-headline">{product.name}</h4>

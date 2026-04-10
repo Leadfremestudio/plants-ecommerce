@@ -53,6 +53,14 @@
   --font-headline: "Plus Jakarta Sans", sans-serif;
   --font-body: "Manrope", sans-serif;
   --font-label: "Manrope", sans-serif;
+
+  --swiper-navigation-color: var(--color-primary);
+  --swiper-pagination-color: var(--color-primary);
+  --swiper-navigation-size: 24px;
+}
+
+.product-thumbs-swiper .swiper-slide-thumb-active {
+  border-color: var(--color-primary) !important;
 }
 
 

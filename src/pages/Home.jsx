@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import { LuArrowRight, LuChevronLeft, LuChevronRight, LuLeaf, LuDollarSign, LuSprout, LuTruck } from 'react-icons/lu';
+import { LuArrowRight, LuChevronLeft, LuChevronRight, LuLeaf, LuDollarSign, LuSprout, LuTruck, LuStar } from 'react-icons/lu';
 import ProductCard from '../components/ProductCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { products } from '../data/products';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -10,21 +11,32 @@ import 'swiper/css/navigation';
 
 export default function Home() {
 
-  const featuredProducts = [
-    { id: 1, name: 'Desert Rose', category: 'Flowering', price: '₹4,500', image: '/featured/desert_rose.webp', tag: 'In Stock' },
-    { id: 2, name: 'Exotic Monstera', category: 'Indoor', price: '₹2,600', image: '/featured/indoor_cat.webp', tag: 'Available' },
-    { id: 3, name: 'Asian Juniper Bonsai', category: 'Rare', price: '₹3,900', image: '/featured/hero_bonsai.webp', tag: 'Wholesale Only' },
-    { id: 4, name: 'Premium Adenium', category: 'Flowering', price: '₹6,900', image: '/featured/adenium_cat.webp', tag: 'Best Seller' },
+  const featuredProducts = products.slice(0, 4);
+  const premiumProducts = products.slice(2, 6);
+
+  const feedbacks = [
+    {
+      id: 1,
+      name: "Aman Sharma",
+      role: "Interior Designer",
+      comment: "The quality of the Ficus Lyrata I received was exceptional. It has completely transformed my client's living space. Professional nursery care shows in every leaf.",
+      avatar: "https://i.pravatar.cc/150?u=aman"
+    },
+    {
+      id: 2,
+      name: "Priya Patel",
+      role: "Landscape Architect",
+      comment: "Oasí. provides specimens that are truly premium. Their bonsai collection is one of the best I've found in the country. Highly recommended for high-end projects.",
+      avatar: "https://i.pravatar.cc/150?u=priya"
+    },
+    {
+      id: 3,
+      name: "Rahul Mehra",
+      role: "Collector",
+      comment: "Shipping was flawless. The plant arrived in perfect condition, perfectly acclimated and ready for my indoor garden. The premium packaging is a great touch.",
+      avatar: "https://i.pravatar.cc/150?u=rahul"
+    }
   ];
-
-  const premiumProducts = [
-    { id: 5, name: 'Rare Philodendron', category: 'Indoor', price: '₹5,200', image: '/featured/exotic_indoor_plant.webp', tag: 'Premium' },
-    { id: 6, name: 'Masterpiece Bonsai', category: 'Rare', price: '₹9,800', image: '/featured/bonsai_cat.webp', tag: 'Landscaping' },
-    { id: 7, name: 'Nursery Garden Scape', category: 'Outdoor', price: '₹4,100', image: '/featured/nursery_garden.webp', tag: 'Seasonal' },
-    { id: 8, name: 'Specimen Desert Rose', category: 'Flowering', price: '₹3,200', image: '/featured/desert_rose.webp', tag: 'Organic' },
-  ];
-
-
 
   return (
     <div className="pt-20">
@@ -182,6 +194,62 @@ export default function Home() {
             <h3 className="text-xl font-bold mb-3 font-headline text-[#00450D]">Fast Delivery</h3>
             <p className="text-[#44483D] font-body">Temperature controlled logistics to maintain plant integrity from our greenhouse to your door.</p>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials section */}
+      <section className="py-32 px-8 bg-surface-container overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div>
+              <span className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4 block italic">Voices of Oasí.</span>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-[#00450D] font-headline tracking-tighter">Client Testimonials</h2>
+            </div>
+            <div className="flex gap-3">
+              <button className="feedback-prev p-3 rounded-full bg-[#f1f3e7] text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                <LuChevronLeft className="w-5 h-5" />
+              </button>
+              <button className="feedback-next p-3 rounded-full bg-[#f1f3e7] text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                <LuChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation={{
+              prevEl: '.feedback-prev',
+              nextEl: '.feedback-next',
+            }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
+            spaceBetween={32}
+            slidesPerView={1}
+            breakpoints={{
+              768: { slidesPerView: 2 },
+            }}
+            className="feedback-swiper"
+          >
+            {feedbacks.map((item) => (
+              <SwiperSlide key={item.id}>
+                <div className="bg-white p-10 rounded-[40px] border border-primary/5 hover:shadow-xl transition-all h-full flex flex-col justify-between group">
+                  <div>
+                    <div className="flex items-center gap-1 text-amber-500 mb-6">
+                      <LuStar className="w-4 h-4 fill-current" />
+                      <LuStar className="w-4 h-4 fill-current" />
+                      <LuStar className="w-4 h-4 fill-current" />
+                      <LuStar className="w-4 h-4 fill-current" />
+                      <LuStar className="w-4 h-4 fill-current" />
+                    </div>
+                    <p className="text-lg text-[#00450D] font-body italic leading-relaxed mb-8">"{item.comment}"</p>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-black text-[#00450D] font-headline">{item.name}</h4>
+                    <p className="text-sm font-bold text-primary tracking-widest uppercase opacity-60">{item.role}</p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </section>
     </div>
