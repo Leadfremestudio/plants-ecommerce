@@ -1,0 +1,16 @@
+{
+  "name": "Oasí.",
+  "short_name": "Oasí",
+  "description": "Premium botanical specimens — wholesale plants directly from growers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F9FBE7",
+  "theme_color": "#00450D",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
