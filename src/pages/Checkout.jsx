@@ -61,7 +61,7 @@ export default function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const waNumber = "919747830456";
+    const waNumber = "919747830192";
     const waMessage = formatWhatsAppMessage();
     window.open(`https://wa.me/${waNumber}?text=${waMessage}`, '_blank');
     setIsSubmitted(true);

@@ -27,7 +27,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="font-bold text-lg text-primary mb-1">Wholesale Hotline</h4>
-                <a href="tel:+911234567890" className="text-on-surface-variant hover:text-primary transition-colors underline decoration-outline-variant underline-offset-4">+91 (123) 456-7890</a>
+                <a href="tel:+919747830192" className="text-on-surface-variant hover:text-primary transition-colors underline decoration-outline-variant underline-offset-4">+91 97478 30192</a>
                 <p className="text-on-surface-variant text-sm mt-1">Mon-Fri, 9am - 6pm IST</p>
               </div>
             </div>
