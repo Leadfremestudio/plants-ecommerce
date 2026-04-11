@@ -1,94 +1,69 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LuTrash2, LuArrowLeft } from 'react-icons/lu';
 import QuantitySelector from '../components/QuantitySelector';
+import { useCart } from '../context/CartContext';
 
 export default function Cart() {
   const navigate = useNavigate();
+  const { cartItems, removeFromCart, updateQuantity, cartSubtotal } = useCart();
 
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Ficus Lyrata',
-      category: 'Indoor',
-      price: 4500,
-      quantity: 5,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoEE-BtTsenkcunSjDj158TXVn_F1Zg5ovoz7uA56PammsE7pKs1g6ojCMWPFaFKcyTtbqDxexvYf930PZZ7DsFLaS9xMi99yrp6My-3-sC3r1LBXmqFMJollEiZHXocX3ioqsmMENACC1VDf9FnNoEHD6lkYwuMZNGhuCF0Wici3w9eOEWApR7QKb1eA8flL5pm6Q5DJg_40qgmaJEAgR8tS6bBWchzK16HvcAxpqMI2YTs7Q51Lu-E7uRVjfT3zcLQqVpJJ5I4JF'
-    },
-    {
-      id: 2,
-      name: 'Zonal Geranium',
-      category: 'Flowering',
-      price: 2600,
-      quantity: 10,
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBpoVoIP5VyKg5XhVToGg0Q4EkOBdFuAG7ZJZ5_csB_EDqlaubmpqjqNQyXtATzFZT0HH-Bcgu2wMUZQktZ79CzHdEJmMfl-ASmRv0ZF2epNL7YTDBE6Lp6ZGPCQv3GBXbRw4A1tSFO8dRaFCJHnABuLpdZMY5yWnlb_8V1nj6SKFtyMch5yaYlM3E3t40pOvqMXoaKipDD441vHUydWpoFPBo_r_ai8QGfAkP7CpKsjUwE33jNYvvmEViQMbHZw-10gvVwEYVXPcAj'
-    }
-  ]);
-
-  const updateQuantity = (id, delta) => {
-    setCartItems(items => 
-      items.map(item => {
-        if (item.id === id) {
-          return { ...item, quantity: Math.max(1, item.quantity + delta) };
-        }
-        return item;
-      })
-    );
-  };
-
-  const removeItem = (id) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = 0; // Free shipping
-  const total = subtotal + shipping;
+  const total = cartSubtotal + shipping;
 
   return (
-    <div className="pt-24 pb-24 px-8 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-extrabold text-primary mb-10 font-headline tracking-tight">Your Cart</h1>
+    <div className="pt-24 pb-24 px-8 max-w-7xl mx-auto min-h-screen">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-primary mb-10 font-headline tracking-tight">Your Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Cart Items */}
         <div className="lg:col-span-2 space-y-6">
           {cartItems.length === 0 ? (
-            <div className="bg-surface-container-low p-8 rounded-2xl text-center">
-              <p className="text-on-surface-variant font-body mb-4">Your cart is currently empty.</p>
+            <div className="bg-surface-container-low p-12 rounded-[32px] text-center border-2 border-dashed border-outline-variant/30">
+              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                <LuTrash2 className="w-10 h-10" />
+              </div>
+              <h2 className="text-2xl font-bold text-primary mb-2 font-headline">Your cart is empty</h2>
+              <p className="text-on-surface-variant font-body mb-8 max-w-xs mx-auto">Looks like you haven't added any greenery to your space yet.</p>
               <button 
                 onClick={() => navigate('/browse')}
-                className="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-secondary transition-colors"
+                className="bg-primary text-white px-8 py-4 rounded-2xl font-bold hover:bg-secondary transition-all shadow-lg shadow-primary/20 active:scale-95"
               >
-                Start Shopping
+                Browse Our Collection
               </button>
             </div>
           ) : (
             cartItems.map(item => (
-              <div key={item.id} className="flex flex-col sm:flex-row gap-6 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30">
-                <div className="w-full sm:w-32 h-32 rounded-xl overflow-hidden shrink-0">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              <div key={item.id} className="group flex flex-col sm:flex-row gap-6 bg-white p-6 rounded-[24px] border border-outline-variant/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                <div className="w-full sm:w-40 h-40 rounded-2xl overflow-hidden shrink-0 bg-surface-container-low">
+                  <img src={item.images ? item.images[0] : item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="flex-grow flex flex-col justify-between">
+                <div className="flex-grow flex flex-col justify-between py-2">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-xl font-bold text-primary font-headline">{item.name}</h3>
-                      <p className="text-sm text-on-surface-variant font-body">{item.category}</p>
+                      <h3 className="text-xl md:text-2xl font-bold text-primary font-headline mb-1 hover:text-secondary transition-colors cursor-pointer" onClick={() => navigate(`/product/${item.id}`)}>{item.name}</h3>
+                      <p className="text-sm font-bold text-on-surface-variant/60 uppercase tracking-widest font-body">{item.category}</p>
                     </div>
                     <button 
-                      onClick={() => removeItem(item.id)}
-                      className="text-error hover:bg-error-container p-2 rounded-lg transition-colors"
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-on-surface-variant/40 hover:text-error hover:bg-error/10 p-2.5 rounded-xl transition-all"
+                      title="Remove from cart"
                     >
                       <LuTrash2 className="w-5 h-5" />
                     </button>
                   </div>
-                  <div className="flex justify-between items-end mt-4">
-                    <QuantitySelector 
-                      quantity={item.quantity}
-                      onDecrease={() => updateQuantity(item.id, -1)}
-                      onIncrease={() => updateQuantity(item.id, 1)}
-                    />
+                  <div className="flex flex-wrap justify-between items-end mt-6 gap-4">
+                    <div className="bg-surface-container-low rounded-2xl p-1">
+                      <QuantitySelector 
+                        quantity={item.quantity}
+                        onDecrease={() => updateQuantity(item.id, item.quantity - 1)}
+                        onIncrease={() => updateQuantity(item.id, item.quantity + 1)}
+                      />
+                    </div>
                     <div className="text-right">
-                      <div className="text-sm text-on-surface-variant mb-1">₹{item.price.toLocaleString()} each</div>
-                      <div className="text-xl font-extrabold text-on-surface">₹{(item.price * item.quantity).toLocaleString()}</div>
+                      <div className="text-sm text-on-surface-variant/60 font-medium mb-1 line-through opacity-0">₹{(item.priceValue * 1.2).toLocaleString()}</div>
+                      <div className="text-xl font-bold text-on-surface font-headline tracking-tight">
+                        ₹{(item.priceValue * item.quantity).toLocaleString()}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -99,24 +74,33 @@ export default function Cart() {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-surface-container-low p-8 rounded-2xl sticky top-24">
-            <h2 className="text-2xl font-bold text-primary mb-6 font-headline">Order Summary</h2>
+          <div className="bg-[#F9FBE7]/50 backdrop-blur-xl p-8 rounded-[32px] border border-primary/10 sticky top-24 shadow-sm">
+            <h2 className="text-2xl font-bold text-primary mb-8 font-headline flex items-center gap-3">
+              Order Summary
+              <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">{cartItems.length} Items</span>
+            </h2>
             
-            <div className="space-y-4 mb-6 text-on-surface font-body">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-bold">₹{subtotal.toLocaleString()}</span>
+            <div className="space-y-4 mb-8 text-on-surface font-body">
+              <div className="flex justify-between items-center text-on-surface-variant">
+                <span className="font-medium">Subtotal</span>
+                <span className="font-bold text-on-surface">₹{cartSubtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span className="font-bold text-primary">₹{shipping.toLocaleString()}</span>
+              <div className="flex justify-between items-center">
+                <span className="text-on-surface-variant font-medium">Estimated Shipping</span>
+                <span className="font-bold text-[#00450D]">FREE</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-on-surface-variant font-medium">GST (Included)</span>
+                <span className="font-bold text-on-surface">₹0</span>
               </div>
             </div>
             
-            <div className="border-t border-outline-variant/30 pt-4 mb-8">
+            <div className="border-t border-primary/10 pt-6 mb-8">
               <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-on-surface font-headline">Total</span>
-                <span className="text-3xl font-extrabold text-primary">₹{total.toLocaleString()}</span>
+                <span className="text-lg font-bold text-primary font-headline uppercase tracking-wider">Total</span>
+                <div className="text-right">
+                  <span className="text-3xl font-bold text-primary font-headline tracking-tighter">₹{total.toLocaleString()}</span>
+                </div>
               </div>
             </div>
 
@@ -124,16 +108,25 @@ export default function Cart() {
               <button 
                 onClick={() => navigate('/checkout')}
                 disabled={cartItems.length === 0}
-                className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#00450D] text-white py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg hover:bg-[#002B08] transition-all shadow-xl shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
               >
-                Proceed to Checkout
+                Complete Purchase
               </button>
               <button 
                 onClick={() => navigate('/browse')}
-                className="w-full bg-transparent border-2 border-primary text-primary py-4 rounded-xl font-bold text-lg hover:bg-primary-fixed/10 transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-white text-[#00450D] border-2 border-[#00450D]/10 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg hover:bg-primary/5 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
               >
-                <LuArrowLeft className="w-5 h-5" /> Continue Shopping
+                <LuArrowLeft className="w-5 h-5" /> Back to Store
               </button>
+            </div>
+
+            <div className="mt-8 pt-8 border-t border-primary/10 flex items-center gap-4 text-[#44483D]/60 text-xs font-medium">
+               <div className="flex -space-x-2">
+                 {[1,2,3,4].map(i => (
+                   <div key={i} className="w-6 h-6 rounded-full bg-surface-container-highest border-2 border-white"></div>
+                 ))}
+               </div>
+               <p>Joined by 2,000+ plant lovers this month</p>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import QuantitySelector from '../components/QuantitySelector';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, FreeMode } from 'swiper/modules';
 import { products } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -17,10 +18,20 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const { addToCart } = useCart();
 
   const product = useMemo(() => {
     return products.find(p => p.id === parseInt(id)) || products[0];
   }, [id]);
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(product, quantity);
+    navigate('/cart');
+  };
 
   if (!product) {
     return (
@@ -95,8 +106,8 @@ export default function ProductDetail() {
 
         {/* Product Info */}
         <div className="flex flex-col">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 font-headline tracking-tight">{product.name}</h1>
-          <p className="text-xl text-on-surface-variant font-body mb-6">{product.scientificName} • Specimen Grade</p>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-primary mb-4 font-headline tracking-tight">{product.name}</h1>
+          <p className="text-lg md:text-xl text-on-surface-variant font-body mb-6">{product.scientificName} • Specimen Grade</p>
           
           <div className="flex items-center gap-4 mb-8">
             <div className="flex text-amber-400">
@@ -110,7 +121,7 @@ export default function ProductDetail() {
           </div>
 
           <div className="mb-10">
-            <div className="text-3xl font-extrabold text-on-surface mb-4">{product.price} <span className="text-lg text-on-surface-variant font-normal">/ unit</span></div>
+            <div className="text-2xl font-bold text-on-surface mb-4">{product.price} <span className="text-lg text-on-surface-variant font-normal">/ unit</span></div>
             <p className="text-on-surface-variant font-body leading-relaxed">{product.description}</p>
           </div>
 
@@ -130,14 +141,14 @@ export default function ProductDetail() {
 
           <div className="flex gap-4 mb-12">
             <button 
-              className="flex-1 bg-surface-container-highest text-on-surface py-4 rounded-xl font-bold text-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2"
-              onClick={() => navigate('/cart')}
+              className="flex-1 bg-surface-container-highest text-on-surface py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2"
+              onClick={handleAddToCart}
             >
               <LuShoppingCart className="w-5 h-5" /> Add to Cart
             </button>
             <button 
-              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-secondary transition-colors"
-              onClick={() => navigate('/cart')}
+              className="flex-1 bg-primary text-white py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors"
+              onClick={handleBuyNow}
             >
               Buy Now
             </button>

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { LuShoppingCart } from 'react-icons/lu';
+import { useCart } from '../context/CartContext';
 
 export default function ProductCard({ product, className = "" }) {
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   const handleProductClick = () => {
     navigate(`/product/${product.id}`);
@@ -10,7 +12,7 @@ export default function ProductCard({ product, className = "" }) {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    navigate('/cart');
+    addToCart(product);
   };
 
   return (
@@ -29,7 +31,7 @@ export default function ProductCard({ product, className = "" }) {
         <h4 className="text-lg font-bold text-primary mb-1 font-headline">{product.name}</h4>
         <p className="text-sm text-on-surface-variant mb-4 font-body">{product.category}</p>
         <div className="flex justify-between items-center">
-          <span className="text-xl font-extrabold text-on-surface">{product.price}</span>
+          <span className="text-lg font-bold text-on-surface">{product.price}</span>
           <button 
             className="group/cart relative w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors"
             onClick={handleAddToCart}

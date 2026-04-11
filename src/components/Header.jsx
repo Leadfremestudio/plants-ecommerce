@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { FiShoppingCart, FiSearch, FiChevronDown, FiMenu, FiX } from 'react-icons/fi';
+import { useCart } from '../context/CartContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { cartCount } = useCart();
 
   const navLinkClass = ({ isActive }) => 
     `transition-all duration-300 font-medium ${
@@ -59,7 +61,11 @@ export default function Header() {
             
             <Link to="/cart" className="relative group cursor-pointer p-2 hover:bg-primary/5 rounded-full transition-colors">
               <FiShoppingCart className="w-6 h-6 text-[#00450D]" />
-              <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">2</span>
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             {/* Hamburger Button */}

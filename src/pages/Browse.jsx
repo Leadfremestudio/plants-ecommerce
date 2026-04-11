@@ -30,8 +30,8 @@ export default function Browse() {
     <div className="pt-24 pb-24 px-8 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-8">
         <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 font-headline tracking-tight">Oasí. Archive</h1>
-          <p className="text-xl text-on-surface-variant font-body">Browse our complete collection of refined botanical specimens.</p>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-primary mb-4 font-headline tracking-tight">Oasí. Archive</h1>
+          <p className="text-lg md:text-xl text-on-surface-variant font-body">Browse our complete collection of refined botanical specimens.</p>
         </div>
         
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">

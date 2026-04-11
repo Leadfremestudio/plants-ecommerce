@@ -49,10 +49,10 @@ export default function Home() {
         <div className="relative z-10 max-w-7xl mx-auto px-8 w-full">
           <div className="max-w-4xl mx-auto text-center text-white">
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary-fixed/20 backdrop-blur-md text-primary-fixed font-bold tracking-widest uppercase mb-6">Direct From Growers</span>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] mb-6 tracking-tight font-headline">Wholesale Plants Directly from Growers</h1>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[1.1] mb-6 tracking-tight font-headline">Wholesale Plants Directly from Growers</h1>
             <p className="text-lg md:text-2xl font-body mb-10 opacity-90 max-w-2xl mx-auto font-medium">Bulk orders • Best prices • Fresh nursery stock delivered across the region.</p>
             <div className="flex justify-center">
-              <Link to="/browse" className="bg-primary-fixed text-on-primary-fixed px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 w-max">
+              <Link to="/browse" className="bg-primary-fixed text-on-primary-fixed px-6 py-3.5 md:px-8 md:py-4 rounded-xl font-bold text-base md:text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 w-max mx-auto md:mx-0">
                 Browse Plants <LuArrowRight className="w-5 h-5" />
               </Link>
             </div>
@@ -65,7 +65,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-4xl font-bold text-primary mb-2 font-headline">Featured Products</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Featured Products</h2>
               <p className="text-on-surface-variant font-body">Premium stock ready for immediate wholesale dispatch</p>
             </div>
           <div className="flex gap-2">
@@ -101,7 +101,7 @@ export default function Home() {
         </Swiper>
           
           <div className="mt-16 flex justify-center">
-            <Link to="/browse" className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-secondary transition-colors flex items-center gap-2">
+            <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
               View All Products <LuArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -113,7 +113,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-4xl font-bold text-primary mb-2 font-headline">Premium Products</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Premium Products</h2>
               <p className="text-on-surface-variant font-body">Exclusive and rare specimens for high-end landscaping</p>
             </div>
             <div className="flex gap-2">
@@ -152,7 +152,7 @@ export default function Home() {
           </Swiper>
           
           <div className="mt-16 flex justify-center">
-            <Link to="/browse" className="bg-primary text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-secondary transition-colors flex items-center gap-2">
+            <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
               View All Products <LuArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -162,7 +162,7 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="py-24 bg-primary px-8 text-white rounded-t-[3rem]">
         <div className="max-w-7xl mx-auto mb-16 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 font-headline text-primary-fixed">Why Choose Us</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 font-headline text-primary-fixed">Why Choose Us</h2>
           <p className="text-primary-fixed/80 font-body text-lg">The standard for botanical excellence and professional nursery services</p>
         </div>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -198,18 +198,18 @@ export default function Home() {
       </section>
 
       {/* Testimonials section */}
-      <section className="py-32 px-8 bg-surface-container overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+      <section className="py-24 bg-surface-container overflow-hidden">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="flex justify-between items-end mb-12">
             <div>
-              <span className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4 block italic">Voices of Oasí.</span>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-[#00450D] font-headline tracking-tighter">Client Testimonials</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Client Testimonials</h2>
+              <p className="text-on-surface-variant font-body italic opacity-80">Voices of Oasí. botanical excellence across the region</p>
             </div>
-            <div className="flex gap-3">
-              <button className="feedback-prev p-3 rounded-full bg-[#f1f3e7] text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+            <div className="flex gap-2">
+              <button className="feedback-prev p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 <LuChevronLeft className="w-5 h-5" />
               </button>
-              <button className="feedback-next p-3 rounded-full bg-[#f1f3e7] text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+              <button className="feedback-next p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                 <LuChevronRight className="w-5 h-5" />
               </button>
             </div>
