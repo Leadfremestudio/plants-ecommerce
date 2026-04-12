@@ -1,18 +1,32 @@
 import { Link } from 'react-router-dom';
-import { LuArrowRight, LuChevronLeft, LuChevronRight, LuLeaf, LuDollarSign, LuSprout, LuTruck, LuStar } from 'react-icons/lu';
+import { LuArrowRight, LuChevronLeft, LuChevronRight, LuLeaf, LuDollarSign, LuSprout, LuTruck, LuStar, LuLoader } from 'react-icons/lu';
+import { Navigation, Autoplay } from 'swiper/modules';
 import ProductCard from '../components/ProductCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import { products } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 
 export default function Home() {
+  const { products, loading } = useProducts();
 
-  const featuredProducts = products.slice(0, 4);
-  const premiumProducts = products.slice(2, 6);
+  // Show latest products first
+  const latestProducts = [...products].reverse();
+
+  // 1. New Arrivals: The 8 most recently added items
+  const newArrivals = latestProducts.slice(0, 8);
+  
+  // 2. Featured: Filter for Featured or Best Sellers
+  const featuredProducts = latestProducts.filter(p => 
+    p.tag === 'Featured' || p.tag === 'Best Seller'
+  ).slice(0, 8);
+
+  // 3. Premium: Filter for Premium or Rare
+  const premiumProducts = latestProducts.filter(p => 
+    p.tag === 'Premium' || p.tag === 'Rare' || p.category === 'Rare'
+  ).slice(0, 8);
 
   const feedbacks = [
     {
@@ -60,97 +74,54 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-24 bg-surface-container-low overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Featured Products</h2>
-              <p className="text-on-surface-variant font-body">Premium stock ready for immediate wholesale dispatch</p>
-            </div>
-          <div className="flex gap-2">
-            <button className="featured-prev p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-              <LuChevronLeft className="w-5 h-5" />
-            </button>
-            <button className="featured-next p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-              <LuChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-        
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          spaceBetween={32}
-          slidesPerView={1}
-          navigation={{
-            prevEl: '.featured-prev',
-            nextEl: '.featured-next',
-          }}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
-          breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 4 },
-          }}
-          className="product-swiper"
-        >
-          {featuredProducts.map((product) => (
-            <SwiperSlide key={product.id}>
-              <ProductCard product={product} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-          
-          <div className="mt-16 flex justify-center">
-            <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
-              View All Products <LuArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Premium Products */}
+      {/* New Arrivals Section */}
       <section className="py-24 bg-surface overflow-hidden">
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Premium Products</h2>
-              <p className="text-on-surface-variant font-body">Exclusive and rare specimens for high-end landscaping</p>
+              <span className="text-primary font-black uppercase tracking-[0.3em] text-sm mb-2 block">Just In</span>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-primary mb-2 font-headline tracking-tight">New Arrivals</h2>
+              <p className="text-on-surface-variant font-body text-lg">Freshly sourced specimens straight from our botanical nursery</p>
             </div>
             <div className="flex gap-2">
-              <button className="premium-prev p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                <LuChevronLeft className="w-5 h-5" />
+              <button className="new-prev p-3 rounded-full bg-surface-container-high text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                <LuChevronLeft className="w-6 h-6" />
               </button>
-              <button className="premium-next p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                <LuChevronRight className="w-5 h-5" />
+              <button className="new-next p-3 rounded-full bg-surface-container-high text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                <LuChevronRight className="w-6 h-6" />
               </button>
             </div>
           </div>
 
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={32}
-            slidesPerView={1}
-            navigation={{
-              prevEl: '.premium-prev',
-              nextEl: '.premium-next',
-            }}
-            autoplay={{ delay: 6000, disableOnInteraction: false }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 4 },
-            }}
-            className="product-swiper"
-          >
-            {premiumProducts.map((product) => (
-              <SwiperSlide key={product.id}>
-                <ProductCard 
-                  product={product} 
-                  className="border border-outline-variant/30" 
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <LuLoader className="w-12 h-12 text-primary animate-spin" />
+            </div>
+          ) : newArrivals.length > 0 ? (
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={32}
+              slidesPerView={1}
+              navigation={{ prevEl: '.new-prev', nextEl: '.new-next' }}
+              autoplay={{ delay: 4000, disableOnInteraction: false }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 4 },
+              }}
+              className="product-swiper"
+            >
+              {newArrivals.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <ProductCard product={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div className="text-center py-20 bg-surface-container-low rounded-[3rem] border border-dashed border-outline-variant">
+              <p className="text-on-surface-variant font-medium">No botanical specimens found in the inventory yet.</p>
+            </div>
+          )}
+
           <div className="mt-16 flex justify-center">
             <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
               View All Products <LuArrowRight className="w-5 h-5" />
@@ -158,6 +129,121 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Featured Products */}
+      {featuredProducts.length > 0 && (
+        <section className="py-24 bg-surface-container-low overflow-hidden">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Featured Collection</h2>
+                <p className="text-on-surface-variant font-body">Our hand-picked best sellers and featured landscaping choices</p>
+              </div>
+            <div className="flex gap-2">
+              <button className="featured-prev p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                <LuChevronLeft className="w-5 h-5" />
+              </button>
+              <button className="featured-next p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                <LuChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+          
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <LuLoader className="w-12 h-12 text-primary animate-spin" />
+            </div>
+          ) : (
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              spaceBetween={32}
+              slidesPerView={1}
+              navigation={{
+                prevEl: '.featured-prev',
+                nextEl: '.featured-next',
+              }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 4 },
+              }}
+              className="product-swiper"
+            >
+              {featuredProducts.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <ProductCard product={product} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+            
+            <div className="mt-16 flex justify-center">
+              <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
+                View All Products <LuArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Premium Products */}
+      {premiumProducts.length > 0 && (
+        <section className="py-24 bg-surface overflow-hidden">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="flex justify-between items-end mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2 font-headline">Premium Specimens</h2>
+                <p className="text-on-surface-variant font-body">Exclusive and rare specimens for high-end landscape architecture</p>
+              </div>
+              <div className="flex gap-2">
+                <button className="premium-prev p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                  <LuChevronLeft className="w-5 h-5" />
+                </button>
+                <button className="premium-next p-3 rounded-full bg-white text-primary hover:bg-primary-fixed transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                  <LuChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center py-20">
+                <LuLoader className="w-12 h-12 text-primary animate-spin" />
+              </div>
+            ) : (
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={32}
+                slidesPerView={1}
+                navigation={{
+                  prevEl: '.premium-prev',
+                  nextEl: '.premium-next',
+                }}
+                autoplay={{ delay: 6000, disableOnInteraction: false }}
+                breakpoints={{
+                  640: { slidesPerView: 2 },
+                  1024: { slidesPerView: 4 },
+                }}
+                className="product-swiper"
+              >
+                {premiumProducts.map((product) => (
+                  <SwiperSlide key={product.id}>
+                    <ProductCard 
+                      product={product} 
+                      className="border border-outline-variant/30" 
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
+            
+            <div className="mt-16 flex justify-center">
+              <Link to="/browse" className="bg-primary text-white px-8 py-3.5 md:px-10 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors flex items-center gap-2">
+                View All Products <LuArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Why Choose Us */}
       <section className="py-24 bg-primary px-8 text-white rounded-t-[3rem]">

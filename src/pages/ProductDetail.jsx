@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { LuShoppingCart, LuChevronRight, LuChevronLeft, LuStar, LuTruck, LuShieldCheck, LuLeaf } from 'react-icons/lu';
+import { LuShoppingCart, LuChevronRight, LuChevronLeft, LuStar, LuTruck, LuShieldCheck, LuLeaf, LuLoader } from 'react-icons/lu';
 import QuantitySelector from '../components/QuantitySelector';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs, FreeMode } from 'swiper/modules';
-import { products } from '../data/products';
+import { useProducts } from '../context/ProductContext';
 import { useCart } from '../context/CartContext';
 
 // Import Swiper styles
@@ -16,22 +16,60 @@ import 'swiper/css/free-mode';
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { products, loading } = useProducts();
   const [quantity, setQuantity] = useState(1);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const { addToCart } = useCart();
 
   const product = useMemo(() => {
-    return products.find(p => p.id === parseInt(id)) || products[0];
-  }, [id]);
+    if (!products || products.length === 0) return null;
+    return products.find(p => String(p.id) === String(id));
+  }, [products, id]);
+
+  // CRITICAL SAFETY GUARD: Prevent crash if product is loading or missing
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-surface flex items-center justify-center">
+        <LuLoader className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-surface flex flex-col items-center justify-center p-6 text-center">
+        <h2 className="text-3xl font-black text-primary mb-4">Plant Not Found</h2>
+        <p className="text-on-surface-variant max-w-md mx-auto mb-8">
+          The specimen you're searching for might have moved to a different greenhouse or is temporarily unavailable.
+        </p>
+        <button 
+          onClick={() => window.location.href = '/browse'}
+          className="bg-primary text-white px-8 py-3 rounded-xl font-bold"
+        >
+          Back to Greenhouse
+        </button>
+      </div>
+    );
+  }
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    if (product) addToCart(product, quantity);
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity);
-    navigate('/cart');
+    if (product) {
+      addToCart(product, quantity);
+      navigate('/cart');
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LuLoader className="w-12 h-12 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -68,7 +106,11 @@ export default function ProductDetail() {
             >
               {product.images.map((img, index) => (
                 <SwiperSlide key={index}>
-                  <img className="w-full h-full object-cover" alt={`${product.name} view ${index + 1}`} src={img} />
+                  <img 
+                    className="w-full h-full object-cover" 
+                    alt={`${product.name} view ${index + 1}`} 
+                    src={img} 
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -98,7 +140,11 @@ export default function ProductDetail() {
           >
             {product.images.map((img, index) => (
               <SwiperSlide key={index} className="overflow-hidden rounded-xl cursor-pointer border-2 border-transparent transition-colors !h-full">
-                <img className="w-full h-full object-cover" alt={`Thumbnail ${index + 1}`} src={img} />
+                <img 
+                  className="w-full h-full object-cover" 
+                  alt={`Thumbnail ${index + 1}`} 
+                  src={img} 
+                />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -107,7 +153,11 @@ export default function ProductDetail() {
         {/* Product Info */}
         <div className="flex flex-col">
           <h1 className="text-3xl md:text-5xl font-extrabold text-primary mb-4 font-headline tracking-tight">{product.name}</h1>
-          <p className="text-lg md:text-xl text-on-surface-variant font-body mb-6">{product.scientificName} • Specimen Grade</p>
+          {product.scientificName && (
+            <p className="text-lg md:text-xl text-on-surface-variant font-body mb-6 italic">
+              {product.scientificName}
+            </p>
+          )}
           
           <div className="flex items-center gap-4 mb-8">
             <div className="flex text-amber-400">
@@ -126,32 +176,50 @@ export default function ProductDetail() {
           </div>
 
           <div className="space-y-6 mb-10">
-            <div>
-              <h3 className="text-sm font-bold text-on-surface uppercase tracking-widest mb-3 font-headline">Quantity</h3>
-              <div className="flex items-center gap-4">
-                <QuantitySelector 
-                  size="md"
-                  quantity={quantity}
-                  onDecrease={() => setQuantity(Math.max(1, quantity - 1))}
-                  onIncrease={() => setQuantity(quantity + 1)}
-                />
+            {product.inStock ? (
+              <div>
+                <h3 className="text-sm font-bold text-on-surface uppercase tracking-widest mb-3 font-headline">Quantity</h3>
+                <div className="flex items-center gap-4">
+                  <QuantitySelector 
+                    size="md"
+                    quantity={quantity}
+                    onDecrease={() => setQuantity(Math.max(1, quantity - 1))}
+                    onIncrease={() => setQuantity(quantity + 1)}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-error/10 text-error px-6 py-4 rounded-2xl flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-error animate-pulse" />
+                <span className="font-black uppercase tracking-widest text-sm italic">Temporarily Unavailable</span>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-4 mb-12">
-            <button 
-              className="flex-1 bg-surface-container-highest text-on-surface py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2"
-              onClick={handleAddToCart}
-            >
-              <LuShoppingCart className="w-5 h-5" /> Add to Cart
-            </button>
-            <button 
-              className="flex-1 bg-primary text-white py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors"
-              onClick={handleBuyNow}
-            >
-              Buy Now
-            </button>
+            {!product.inStock ? (
+              <button 
+                disabled
+                className="flex-1 bg-surface-container-highest text-on-surface-variant/40 py-4 rounded-xl font-black text-lg cursor-not-allowed border border-outline-variant/30 flex items-center justify-center gap-2"
+              >
+                <LuX className="w-5 h-5" /> Sold Out
+              </button>
+            ) : (
+              <>
+                <button 
+                  className="flex-1 bg-surface-container-highest text-on-surface py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2"
+                  onClick={handleAddToCart}
+                >
+                  <LuShoppingCart className="w-5 h-5" /> Add to Cart
+                </button>
+                <button 
+                  className="flex-1 bg-primary text-white py-3.5 md:py-4 rounded-xl font-bold text-base md:text-lg hover:bg-secondary transition-colors"
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
+                </button>
+              </>
+            )}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-outline-variant/30">
