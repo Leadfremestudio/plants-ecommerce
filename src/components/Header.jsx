@@ -35,10 +35,10 @@ export default function Header() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-[#F9FBE7]/80 backdrop-blur-xl px-8 py-4 max-w-full mx-auto border-b border-primary/5 shadow-sm shadow-primary/5">
+      <nav className="fixed top-0 w-full z-50 bg-[#F9FBE7]/80 backdrop-blur-xl fluid-px py-4 max-w-full mx-auto border-b border-primary/5 shadow-sm shadow-primary/5">
         <div className="flex justify-between items-center relative">
           {/* Left: Brand */}
-          <Link to="/" className="text-3xl font-extrabold tracking-tighter text-[#00450D] font-headline relative z-50">
+          <Link to="/" className="text-2xl md:text-3xl font-extrabold tracking-tighter text-[#00450D] font-headline relative z-50">
             Oasí.
           </Link>
 
@@ -61,19 +61,19 @@ export default function Header() {
           </div>
 
           {/* Right: Actions & Hamburg */}
-          <div className="flex items-center space-x-2 md:space-x-6 relative z-50">
+          <div className="flex items-center space-x-1 md:space-x-4 relative z-50">
             {/* Search Icon Toggle */}
             <button 
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-[#00450D] hover:bg-primary/5 rounded-full transition-colors"
+              className="p-2.5 text-[#00450D] hover:bg-primary/5 rounded-full transition-colors"
             >
-              <FiSearch className="w-6 h-6" />
+              <FiSearch className="w-5 h-5 md:w-6 md:h-6" />
             </button>
             
-            <Link to="/cart" className="relative group cursor-pointer p-2 hover:bg-primary/5 rounded-full transition-colors">
-              <FiShoppingCart className="w-6 h-6 text-[#00450D]" />
+            <Link to="/cart" className="relative group cursor-pointer p-2.5 hover:bg-primary/5 rounded-full transition-colors">
+              <FiShoppingCart className="w-5 h-5 md:w-6 md:h-6 text-[#00450D]" />
               {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                <span className="absolute top-1 right-1 bg-secondary text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-black">
                   {cartCount}
                 </span>
               )}
@@ -81,7 +81,7 @@ export default function Header() {
 
             {/* Hamburger Button */}
             <button 
-              className="md:hidden p-2 text-[#00450D] hover:bg-primary/5 rounded-full transition-colors"
+              className="md:hidden p-2.5 text-[#00450D] hover:bg-primary/5 rounded-full transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
@@ -92,19 +92,19 @@ export default function Header() {
 
       {/* Search Popup Modal */}
       <div className={`fixed inset-0 z-[100] transition-all duration-300 ${isSearchOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => {
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-md" onClick={() => {
           setIsSearchOpen(false);
           setSearchQuery('');
         }}></div>
         
-        <div className={`absolute top-24 left-1/2 -translate-x-1/2 w-[95%] max-w-2xl bg-white rounded-[40px] shadow-2xl transition-all duration-500 overflow-hidden ${isSearchOpen ? 'translate-y-0 scale-100' : '-translate-y-10 scale-95'}`}>
-          <div className="p-8">
-            <div className="flex items-center gap-4 bg-surface-container-high/50 rounded-2xl px-6 py-4 mb-8">
-              <FiSearch className="w-6 h-6 text-on-surface-variant opacity-50" />
+        <div className={`absolute top-20 md:top-24 left-1/2 -translate-x-1/2 w-[92%] max-w-2xl bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-2xl transition-all duration-500 overflow-hidden ${isSearchOpen ? 'translate-y-0 scale-100' : '-translate-y-10 scale-95'}`}>
+          <div className="p-6 md:p-10">
+            <div className="flex items-center gap-3 md:gap-4 bg-surface-container-high/50 rounded-2xl px-5 py-3 md:px-6 md:py-4 mb-6 md:mb-8">
+              <FiSearch className="w-5 h-5 md:w-6 md:h-6 text-on-surface-variant opacity-50" />
               <input 
                 autoFocus={isSearchOpen}
-                className="bg-transparent border-none focus:ring-0 text-lg font-body outline-none w-full text-on-surface" 
-                placeholder="Search Oasí. collections..." 
+                className="bg-transparent border-none focus:ring-0 text-base md:text-lg font-body outline-none w-full text-on-surface" 
+                placeholder="Search collections..." 
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -122,13 +122,13 @@ export default function Header() {
                 }}
                 className="text-on-surface-variant hover:text-primary transition-colors"
               >
-                <FiX className="w-6 h-6" />
+                <FiX className="w-5 h-5 md:w-6 md:h-6" />
               </button>
             </div>
 
             {searchQuery.trim() ? (
-              <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500">
-                <h5 className="text-[11px] font-black text-on-surface-variant/50 uppercase tracking-[0.2em] ml-2">Smart Suggestions</h5>
+              <div className="space-y-6 max-h-[60vh] overflow-y-auto scrollbar-hide pr-2">
+                <h5 className="text-[10px] font-black text-on-surface-variant/50 uppercase tracking-[0.2em] ml-2">Smart Suggestions</h5>
                 <div className="space-y-2">
                   {filteredProducts.length > 0 ? (
                     filteredProducts.map(product => (
@@ -139,20 +139,20 @@ export default function Header() {
                           setIsSearchOpen(false);
                           setSearchQuery('');
                         }}
-                        className="flex items-center gap-4 p-3 rounded-3xl hover:bg-surface-container-high transition-all group"
+                        className="flex items-center gap-3 md:gap-4 p-2.5 md:p-3 rounded-2xl md:rounded-3xl hover:bg-surface-container-high transition-all group"
                       >
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-surface-container">
+                        <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl overflow-hidden bg-surface-container shrink-0">
                           <img 
                             src={product.images ? product.images[0] : product.image} 
                             alt={product.name} 
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                         </div>
-                        <div className="flex-1">
-                          <h4 className="font-bold text-on-surface group-hover:text-primary transition-colors">{product.name}</h4>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm md:text-base font-bold text-on-surface group-hover:text-primary transition-colors truncate">{product.name}</h4>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-on-surface-variant font-medium">{product.category}</span>
-                            <span className="text-xs font-bold text-on-surface">{product.price}</span>
+                            <span className="text-[10px] md:text-xs text-on-surface-variant font-medium">{product.category}</span>
+                            <span className="text-[10px] md:text-xs font-black text-on-surface">{product.price}</span>
                           </div>
                         </div>
                         <FiChevronRight className="w-5 h-5 text-on-surface-variant opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
@@ -160,20 +160,20 @@ export default function Header() {
                     ))
                   ) : (
                     <div className="py-12 text-center">
-                      <p className="text-on-surface-variant font-medium">No botanical specimens found matching "{searchQuery}"</p>
+                      <p className="text-on-surface-variant font-medium">No specimens found matching "{searchQuery}"</p>
                     </div>
                   )}
                 </div>
               </div>
             ) : (
               <div className="space-y-4">
-                <h5 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Quick Search Collections</h5>
+                <h5 className="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Quick Search</h5>
                 <div className="flex flex-wrap gap-2">
                   {quickCollections.map(col => (
                     <button 
                       key={col}
                       onClick={() => setSearchQuery(col)}
-                      className="px-6 py-2.5 rounded-2xl bg-surface-container-low text-on-surface font-bold text-sm hover:bg-primary hover:text-white transition-all shadow-sm active:scale-95"
+                      className="px-5 py-2 md:px-6 md:py-2.5 rounded-xl md:rounded-2xl bg-surface-container-low text-on-surface font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all shadow-sm active:scale-95"
                     >
                       {col}
                     </button>
@@ -186,18 +186,31 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-40 bg-surface-container-lowest transition-all duration-500 md:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="pt-24 px-8 flex flex-col items-center text-center space-y-2">
+      <div className={`fixed inset-0 z-40 bg-white/95 backdrop-blur-3xl transition-all duration-500 md:hidden ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+        <div className="pt-32 px-10 flex flex-col space-y-2">
           <NavLink to="/" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Home</NavLink>
-          <NavLink to="/browse" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Plants</NavLink>
-          <NavLink to="/about" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Our Story</NavLink>
-          <NavLink to="/contact" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Contact Us</NavLink>
+          <NavLink to="/browse" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Catalogue</NavLink>
+          <NavLink to="/about" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Story</NavLink>
+          <NavLink to="/contact" onClick={() => setIsMenuOpen(false)} className={mobileNavLinkClass}>Contact</NavLink>
+          
+          <div className="pt-20 border-t border-outline-variant/10">
+            <h5 className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-6">Expert Solutions</h5>
+            <div className="grid grid-cols-2 gap-4">
+               <div className="p-4 rounded-2xl bg-surface-container-low">
+                  <p className="text-xs font-bold text-primary">Wholesale</p>
+               </div>
+               <div className="p-4 rounded-2xl bg-surface-container-low">
+                  <p className="text-xs font-bold text-primary">Logistics</p>
+               </div>
+            </div>
+          </div>
           
           <div className="pt-12">
-            <p className="text-[#44483D] text-sm opacity-60">© 2026 Oasí. All rights reserved.</p>
+            <p className="text-on-surface-variant text-[10px] font-bold tracking-widest uppercase opacity-40">© 2026 Oasí. Botanical Systems</p>
           </div>
         </div>
       </div>
+
     </>
   );
 }
