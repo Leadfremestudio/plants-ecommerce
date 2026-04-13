@@ -61,8 +61,8 @@
 
 @layer base {
   html {
-    /* Fluid Type Scaling */
-    font-size: clamp(14px, 0.8vw + 12px, 18px);
+    /* More conservative fluid scale */
+    font-size: clamp(14px, 0.4vw + 14px, 16px);
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
@@ -71,19 +71,19 @@
     font-family: var(--font-body);
     background-color: var(--color-background);
     color: var(--color-on-background);
-    line-height: 1.6;
+    line-height: 1.5;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-headline);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
   }
 
-  h1 { font-size: clamp(2.5rem, 5vw + 1rem, 5rem); font-weight: 800; }
-  h2 { font-size: clamp(1.75rem, 3vw + 1rem, 3.5rem); font-weight: 800; }
-  h3 { font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem); font-weight: 700; }
-  h4 { font-size: clamp(1.25rem, 1.5vw + 0.75rem, 1.75rem); font-weight: 700; }
+  h1 { font-size: clamp(2rem, 4vw + 1rem, 3.5rem); font-weight: 800; }
+  h2 { font-size: clamp(1.5rem, 2.5vw + 0.5rem, 2.75rem); font-weight: 800; }
+  h3 { font-size: clamp(1.25rem, 2vw + 0.25rem, 2rem); font-weight: 700; }
+  h4 { font-size: clamp(1.1rem, 1.2vw + 0.4rem, 1.5rem); font-weight: 700; }
   
   /* Selection styling */
   ::selection {
@@ -94,13 +94,13 @@
 
 @layer utilities {
   .fluid-px {
-    padding-left: clamp(1.5rem, 5vw, 4rem);
-    padding-right: clamp(1.5rem, 5vw, 4rem);
+    padding-left: clamp(1rem, 5vw, 4rem);
+    padding-right: clamp(1rem, 5vw, 4rem);
   }
   
   .fluid-py {
-    padding-top: clamp(3rem, 10vh, 8rem);
-    padding-bottom: clamp(3rem, 10vh, 8rem);
+    padding-top: clamp(2rem, 8vh, 6rem);
+    padding-bottom: clamp(2rem, 8vh, 6rem);
   }
 
   .editorial-shadow {
